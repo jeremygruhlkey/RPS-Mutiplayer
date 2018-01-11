@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>RPSLS</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <!-- <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script> -->
+  
+<script>
+  
+//   var config = {
+//     apiKey: "AIzaSyCs4MsbwApVlQ7eyEfDJcyH1uA7jWAfnU4",
+//     authDomain: "rockpaperscissors-ead68.firebaseapp.com",
+//     databaseURL: "https://rockpaperscissors-ead68.firebaseio.com",
+//     projectId: "rockpaperscissors-ead68",
+//     storageBucket: "rockpaperscissors-ead68.appspot.com",
+//     messagingSenderId: "763194146992"
+//   };
+//   firebase.initializeApp(config);
+</script>
+
+  <!-- <link rel="stylesheet" type="text/css" href="assets/css/reset.css"> -->
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+</head>
+
+<body>
+
+        <header class="header">   
+            <div class="title">
+                <h1>Rock Paper Scissors Lizard Spock</h1>  
+            </div>
+        </header>
+
+        <form>
+            <span id=new-player>Your Name: <input id="new-player-name" type="text" ><input id="add-player" value="START" type="submit"></span>
+        </form>
+
+    <div class = "container">
+        <div class = "player" id=  "player-one" attr = "player-one">
+            <p class = "player-one-name">Waiting for Player One</p>
+            <!-- <div class = "selections" id = "one-selections">
+                <p class = "rock choice" attr = "rock">Rock</p>
+                <p class = "paper choice" attr = "paper">Paper</p>
+                <p class = "scissors choice" attr = "scissors">Scissors</p>
+                <p class = "lizard choice" attr = "lizard">Lizard</p>
+                <p class = "spock choice" attr = "spock">Spock</p>
+            </div> -->
+        </div>
+
+        <div class = "player" id = "result"></div>
+
+        <div class = "player" id = "player-two" attr = "player-two">
+            <p class = "player-two-name">Waiting for Player Two</p>
+            <!-- <div class = "selections" id = "two-selections">
+                <p class = "rock choice" attr = "rock">Rock</p>
+                <p class = "paper choice" attr = "paper">Paper</p>
+                <p class = "scissors choice" attr = "scissors">Scissors</p>
+                <p class = "lizard choice" attr = "lizard">Lizard</p>
+                <p class = "spock choice" attr = "spock">Spock</p>
+            </div> -->
+        </div>
+    </div>
+
+        <div class = "rules">
+            <p class = "explanation">Scissors cuts paper, paper covers rock, rock crushes lizard, lizard poisons Spock, Spock smashes scissors, scissors decapitates lizard, lizard eats paper, paper disproves Spock, Spock vaporizes rock, and as it always has, rock crushes scissors. (watch the vid for more)</p>
+            <iframe width="460" height="235" src="https://www.youtube.com/embed/cSLeBKT7-sM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>            
+        </div>
+    
+
+<script type="text/javascript" src="assets/javascript/app.js"></script>
+</body>
