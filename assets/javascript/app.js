@@ -26,16 +26,49 @@ var playerTwoLosses = 0;
 var playerOneChoice;
 var playerTwoChoice;
 
+database.ref().on("value", function(snapshot) {
+    if (snapshot.child("playerOne").exists()) {
+        $(".player-one-name").text(snapshot.val().playerOne);
+    }
+    if (snapshot.child("playerTwo").exists()) {
+        $(".player-two-name").text(snapshot.val().playerTwo);
+    }
+
+    else {
+    $(".player-one-name").text("Waiting for Player One");
+    $(".player-two-name").text("Waiting for Player Two");
+    }
+
+}, function(errorObject) {
+    console.log("The read failed: " + errorObject.code);
+  });
+
 $("#add-player").on("click", function() {
     event.preventDefault();
-     playerOneWins++;
-      database.ref().set({
-        wins: playerOneWins,
-        // something: wins.playerTwoWins
-      });
-    
-      // Log the value of playerOneWins
-      console.log(playerOneWins);
+    var name = $("input[type='text']").val();
 
+    if (!playerOneName) {
+        $(".player-one-name").text(name);
+        // $(".p-one-wins-losses").text("Wins " + playerOneWins + ", Losses " + playerOneLosses);
+        playerOneName = name;
+        
+        console.log("player one: " + playerOneName);
+          
+    }
+    else {
+        $(".player-two-name").text(name);
+        playerTwoName = name;
+        
+        console.log("player two: " + playerTwoName);
+        
+    }
     
+    database.ref().set({
+        playerOne: playerOneName,
+        playerTwo: playerTwoName
+      });
+
     });
+
+   
+      
