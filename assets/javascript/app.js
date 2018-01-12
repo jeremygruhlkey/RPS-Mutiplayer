@@ -26,13 +26,27 @@ var playerTwoLosses = 0;
 var playerOneChoice;
 var playerTwoChoice;
 
+var playerOne = {
+    name: "",
+    wins: 0,
+    losses: 0,
+    choice: ""
+}
+
+var playerTwo = {
+    name: "",
+    wins: 0,
+    losses: 0,
+    choice: ""
+}
+
 database.ref().on("value", function(snapshot) {
-    if (snapshot.child("playerOne").exists()) {
-        $(".player-one-name").text(snapshot.val().playerOne);
+    if (snapshot.child("playerOne/name").exists()) {
+        $(".player-one-name").text(playerOne.name);
         playerOneName = snapshot.val().playerOne;
     }
-    if (snapshot.child("playerTwo").exists()) {
-        $(".player-two-name").text(snapshot.val().playerTwo);
+    if (snapshot.child("playerTwo/name").exists()) {
+        $(".player-two-name").text(playerTwo.name);
         playerTwoName = snapshot.val().playerTwo;
     }
 
@@ -52,24 +66,24 @@ $("#add-player").on("click", function() {
     if (!playerOneName) {
         $(".player-one-name").text(name);
         $(".p-one-wins-losses").text("Wins " + playerOneWins + ", Losses " + playerOneLosses);
-        playerOneName = name;
+        playerOne.name = name;
         // oneWins = ref.child("playerOneName/" + playerOneWins)
         
-        console.log("player one: " + playerOneName);
+        console.log("player one: " + playerOne.name);
           
     }
     else {
         $(".player-two-name").text(name);
         $(".p-two-wins-losses").text("Wins " + playerTwoWins + ", Losses " + playerTwoLosses); 
-        playerTwoName = name;
+        playerTwo.name = name;
         
-        console.log("player two: " + playerTwoName);
+        console.log("player two: " + playerTwo.name);
         
     }
 
     database.ref().update({
-        playerOne: playerOneName,
-        playerTwo: playerTwoName
+        playerOne: playerOne,
+        playerTwo: playerTwo
 
 
       });
