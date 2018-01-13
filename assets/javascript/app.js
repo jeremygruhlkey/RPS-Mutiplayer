@@ -14,21 +14,9 @@ var database = firebase.database();
 
 var choices = [ "Rock", "Paper", "Scissors", "Lizard", "Spock"];
 
-var playerOneName = "";
-var playerTwoName = "";
-
-var playerOneWins = 0;
-var playerOneLosses = 0;
-
-var playerTwoWins = 0;
-var playerTwoLosses = 0;
-
-var playerOneChoice;
-var playerTwoChoice;
-
 var playerOne = {
     name: "",
-    wins: 0,
+    wins: 1,
     losses: 0,
     choice: ""
 }
@@ -36,18 +24,20 @@ var playerOne = {
 var playerTwo = {
     name: "",
     wins: 0,
-    losses: 0,
+    losses: 2,
     choice: ""
 }
 
 database.ref().on("value", function(snapshot) {
-    if (snapshot.child("playerOne/name").exists()) {
+    if (snapshot.child("playerOne").exists()) {
         $(".player-one-name").text(playerOne.name);
-        playerOneName = snapshot.val().playerOne;
+        // playerOne.name = snapshot.val().name;
+
     }
-    if (snapshot.child("playerTwo/name").exists()) {
+    if (snapshot.child("playerTwo").exists()) {
         $(".player-two-name").text(playerTwo.name);
-        playerTwoName = snapshot.val().playerTwo;
+        // playerTwo.name = snapshot.val().name;
+          
     }
 
     else {
@@ -55,38 +45,49 @@ database.ref().on("value", function(snapshot) {
     $(".player-two-name").text("Waiting for Player Two");
     }
 
+
+
 }, function(errorObject) {
     console.log("The read failed: " + errorObject.code);
   });
 
 $("#add-player").on("click", function() {
     event.preventDefault();
-    var name = $("input[type='text']").val();
+    var newName = $("input[type='text']").val();
 
-    if (!playerOneName) {
-        $(".player-one-name").text(name);
-        $(".p-one-wins-losses").text("Wins " + playerOneWins + ", Losses " + playerOneLosses);
-        playerOne.name = name;
-        // oneWins = ref.child("playerOneName/" + playerOneWins)
+    if (!playerOne.name) {
+        playerOne.name = newName;
+        $(".player-one-name").text(playerOne.name);
+        $(".p-one-wins-losses").text("Wins " + playerOne.wins + ", Losses " + playerOne.losses);
         
+        database.ref().update({
+            playerOne: playerOne,
+            // playerTwo: playerTwo
+          });
         console.log("player one: " + playerOne.name);
           
     }
     else {
-        $(".player-two-name").text(name);
-        $(".p-two-wins-losses").text("Wins " + playerTwoWins + ", Losses " + playerTwoLosses); 
-        playerTwo.name = name;
+        playerTwo.name = newName;
+        $(".player-two-name").text(playerTwo.name);
+        $(".p-two-wins-losses").text("Wins " + playerTwo.wins + ", Losses " + playerTwo.losses); 
         
+        
+        database.ref().update({
+            // playerOne: playerOne,
+            playerTwo: playerTwo
+          });
+
         console.log("player two: " + playerTwo.name);
         
     }
 
-    database.ref().update({
-        playerOne: playerOne,
-        playerTwo: playerTwo
+    // database.ref().update({
+    //     playerOne: playerOne,
+    //     playerTwo: playerTwo
 
 
-      });
+    //   });
 
     });
 
