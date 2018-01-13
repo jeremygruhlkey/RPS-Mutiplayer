@@ -12,7 +12,11 @@ var config = {
 // create a variable to reference the database
 var database = firebase.database();
 
-var choices = ['Rock', 'Paper', 'Scissors', 'Lizard', 'Spock'];
+var oneWins = 0;
+var oneLosses = 0;
+
+var twoWins = 0;
+var twoLosses = 0;
 
 var playerOne = {};
 var playerTwo = {};
@@ -54,6 +58,11 @@ database.ref('players').on('value', function(snapshot) {
       );
     } else {
       $('.player-two-name').text('Waiting for Player Two');
+    }
+
+    if (oneChoiceExists && twoChoiceExists) {
+        console.log("both choices exist");
+        checkWin();
     }
   },
   function(errorObject) {
@@ -102,12 +111,46 @@ $(".choice-1").on("click", function(event){
 
 $(".choice-2").on("click", function(event){
     playerTwoChoice = $(this).attr("attr");
-    console.log("player one choice is " + playerTwoChoice);
+    console.log("player two choice is " + playerTwoChoice);
     database.ref("/players/playerTwo").update({
             choice: playerTwoChoice,    
     });
 });
 
+function checkWin(){
+    console.log("game in motion");
+    console.log("player one choice " + playerOne.choice);
+    if (playerOne.choice === playerTwo.choice) {
+        console.log("It's a tie!!");
+        $("#result").text("It's a tie");
+    }
 
+    if (playerOne.choice === "paper" && (playerTwo.choice === "rock" || playerTwo.choice === "spock")) {
+        console.log("player one wins!");
+        oneWins++;
+        twoLosses++;
+        database.ref("/players/playerOne").update({
+            wins: oneWins,
+            choice: "",
+        });
+        database.ref("/players/playerTwo").update({
+            losses: twoLosses,
+            choice: "",
+        });
+    }
+
+    if (playerOne.choice === "paper" && (playerTwo.choice === "scissors" || playerTwo.choice === "lizard")) {
+        console.log("player one wins!");
+        oneLosses++;
+        twoWins++;
+        database.ref("/players/playerOne").update({
+            losses: oneLosses,
+            choice: "",
+        });
+        database.ref("/players/playerTwo").update({
+            wins: twoWins,
+            choice: "",
+        });
+}
    
-      
+}
