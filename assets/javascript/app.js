@@ -12,84 +12,84 @@ var config = {
 // create a variable to reference the database
 var database = firebase.database();
 
-var choices = [ "Rock", "Paper", "Scissors", "Lizard", "Spock"];
+var choices = ['Rock', 'Paper', 'Scissors', 'Lizard', 'Spock'];
 
-var playerOne = {
-    name: "",
-    wins: 1,
-    losses: 0,
-    choice: ""
-}
+var playerOne = {};
+var playerTwo = {};
 
-var playerTwo = {
-    name: "",
-    wins: 0,
-    losses: 2,
-    choice: ""
-}
+database.ref('players').on(
+  'value',
+  function(snapshot) {
+    const playerOneExists = snapshot.child('playerOne').exists();
+    const playerTwoExists = snapshot.child('playerTwo').exists();
 
-database.ref().on("value", function(snapshot) {
-    if (snapshot.child("playerOne").exists()) {
-        $(".player-one-name").text(playerOne.name);
-        // playerOne.name = snapshot.val().name;
+    if (playerOneExists && playerTwoExists) {
+      $('#add-player').prop('disabled', true);
 
-    }
-    if (snapshot.child("playerTwo").exists()) {
-        $(".player-two-name").text(playerTwo.name);
-        // playerTwo.name = snapshot.val().name;
-          
+      $('.p-two-wins-losses').text(
+        'Wins' + playerTwo.wins + ', Losses ' + playerTwo.losses,
+      );
     }
 
-    else {
-    $(".player-one-name").text("Waiting for Player One");
-    $(".player-two-name").text("Waiting for Player Two");
+    if (playerOneExists) {
+      playerOne = snapshot.child('playerOne').val();
+      console.log(playerOne);
+      $('.player-one-name').text(playerOne.name);
+      $('.p-one-wins-losses').text(
+        'Wins ' + playerOne.wins + ', Losses ' + playerOne.losses,
+      );
+    } else {
+      $('.player-one-name').text('Waiting for Player One');
+      $('.player-two-name').text('Waiting for Player Two');
+      return;
     }
 
-
-
-}, function(errorObject) {
-    console.log("The read failed: " + errorObject.code);
-  });
-
-$("#add-player").on("click", function() {
-    event.preventDefault();
-    var newName = $("input[type='text']").val();
-
-    if (!playerOne.name) {
-        playerOne.name = newName;
-        $(".player-one-name").text(playerOne.name);
-        $(".p-one-wins-losses").text("Wins " + playerOne.wins + ", Losses " + playerOne.losses);
-        
-        database.ref().update({
-            playerOne: playerOne,
-            // playerTwo: playerTwo
-          });
-        console.log("player one: " + playerOne.name);
-          
+    if (playerTwoExists) {
+      playerTwo = snapshot.child('playerTwo').val();
+      $('.player-two-name').text(playerTwo.name);
+      $('.p-two-wins-losses').text(
+        'Wins ' + playerTwo.wins + ', Losses ' + playerTwo.losses,
+      );
+    } else {
+      $('.player-two-name').text('Waiting for Player Two');
     }
-    else {
-        playerTwo.name = newName;
-        $(".player-two-name").text(playerTwo.name);
-        $(".p-two-wins-losses").text("Wins " + playerTwo.wins + ", Losses " + playerTwo.losses); 
-        
-        
-        database.ref().update({
-            // playerOne: playerOne,
-            playerTwo: playerTwo
-          });
+  },
+  function(errorObject) {
+    console.log('The read failed: ' + errorObject.code);
+  },
+);
 
-        console.log("player two: " + playerTwo.name);
-        
-    }
+$('#add-player').on('click', function(event) {
+  event.preventDefault();
+  var newName = $("input[type='text']").val();
 
-    // database.ref().update({
-    //     playerOne: playerOne,
-    //     playerTwo: playerTwo
+  if (!playerOne.name) {
+    $('.player-one-name').text(playerOne.name);
 
-
-    //   });
-
+    database.ref("/players").update({
+      playerOne: {
+        name: newName,
+        wins: 0,
+        losses: 0,
+        choice: '',
+      },
     });
+    console.log('player one: ' + playerOne.name);
+  } else {
+    $('.player-two-name').text(playerTwo.name);
+
+    database.ref("/players").update({
+      playerTwo: {
+        name: newName,
+        wins: 0,
+        losses: 0,
+        choice: '',
+      },
+    });
+    console.log('player two: ' + playerTwo.name);
+  }
+});
+
 
    
       
