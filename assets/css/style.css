@@ -19,6 +19,17 @@ form {
     float: left;
 }
 
+.name {
+    font-weight: bold;
+}
+
+.choice-1 {
+    color: red;
+}
+.choice-2 {
+    color: blue;
+}
+
 p {
     margin: 5px;
 }

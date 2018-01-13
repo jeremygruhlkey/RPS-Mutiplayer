@@ -17,17 +17,19 @@ var choices = ['Rock', 'Paper', 'Scissors', 'Lizard', 'Spock'];
 var playerOne = {};
 var playerTwo = {};
 
-database.ref('players').on(
-  'value',
-  function(snapshot) {
+database.ref('players').on('value', function(snapshot) {
     const playerOneExists = snapshot.child('playerOne').exists();
     const playerTwoExists = snapshot.child('playerTwo').exists();
+    const oneChoiceExists = snapshot.child('playerOne/choice').exists();
+    const twoChoiceExists = snapshot.child('playerTwo/choice').exists();
+    console.log("oneChoiceExists " + oneChoiceExists);
+    console.log("twoChoiceExists " + twoChoiceExists);
 
     if (playerOneExists && playerTwoExists) {
       $('#add-player').prop('disabled', true);
 
       $('.p-two-wins-losses').text(
-        'Wins' + playerTwo.wins + ', Losses ' + playerTwo.losses,
+        ' Wins ' + playerTwo.wins + ', Losses ' + playerTwo.losses,
       );
     }
 
@@ -48,7 +50,7 @@ database.ref('players').on(
       playerTwo = snapshot.child('playerTwo').val();
       $('.player-two-name').text(playerTwo.name);
       $('.p-two-wins-losses').text(
-        'Wins ' + playerTwo.wins + ', Losses ' + playerTwo.losses,
+        ' Wins ' + playerTwo.wins + ', Losses ' + playerTwo.losses,
       );
     } else {
       $('.player-two-name').text('Waiting for Player Two');
@@ -64,7 +66,7 @@ $('#add-player').on('click', function(event) {
   var newName = $("input[type='text']").val();
 
   if (!playerOne.name) {
-    $('.player-one-name').text(playerOne.name);
+    // $('.player-one-name').text(playerOne.name);
 
     database.ref("/players").update({
       playerOne: {
@@ -76,7 +78,7 @@ $('#add-player').on('click', function(event) {
     });
     console.log('player one: ' + playerOne.name);
   } else {
-    $('.player-two-name').text(playerTwo.name);
+    // $('.player-two-name').text(playerTwo.name);
 
     database.ref("/players").update({
       playerTwo: {
@@ -88,6 +90,22 @@ $('#add-player').on('click', function(event) {
     });
     console.log('player two: ' + playerTwo.name);
   }
+});
+
+$(".choice-1").on("click", function(event){
+    playerOneChoice = $(this).attr("attr");
+    console.log("player one choice is " + playerOneChoice);
+    database.ref("/players/playerOne").update({
+            choice: playerOneChoice,    
+    });
+});
+
+$(".choice-2").on("click", function(event){
+    playerTwoChoice = $(this).attr("attr");
+    console.log("player one choice is " + playerTwoChoice);
+    database.ref("/players/playerTwo").update({
+            choice: playerTwoChoice,    
+    });
 });
 
 
