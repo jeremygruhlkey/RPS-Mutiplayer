@@ -73,7 +73,7 @@ $('#add-player').on('click', function(event) {
         name: newName,
         wins: 0,
         losses: 0,
-        choice: '',
+        // choice: '',
       },
     });
     console.log('player one: ' + playerOne.name);
@@ -85,12 +85,12 @@ $('#add-player').on('click', function(event) {
         name: newName,
         wins: 0,
         losses: 0,
-        choice: '',
+        // choice: '',
       },
     });
     console.log('player two: ' + playerTwo.name);
   }
-});
+});  
 
 $(".choice-1").on("click", function(event){
     playerOneChoice = $(this).attr("attr");
