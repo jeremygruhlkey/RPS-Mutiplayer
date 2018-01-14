@@ -20,10 +20,10 @@ var twoLosses = 0;
 
 var playerOne = {};
 var playerTwo = {};
-// from Nema
+
 var playerRefForRemove = "";
 var removeThisPlayer;
-// 
+
 database.ref('players').on('value', function(snapshot) {
     const playerOneExists = snapshot.child('playerOne').exists();
     const playerTwoExists = snapshot.child('playerTwo').exists();
@@ -78,7 +78,7 @@ $('#add-player').on('click', function(event) {
   var newName = $("input[type='text']").val();
 
   if (!playerOne.name) {
-    // from Nema
+    
     playerRefForRemove = "playerOne";
 
     database.ref("/players").update({
@@ -91,7 +91,7 @@ $('#add-player').on('click', function(event) {
     });
     console.log('player one: ' + playerOne.name);
   } else {
-    // from Nema
+    
     playerRefForRemove = "playerTwo";
 
     database.ref("/players").update({
@@ -104,7 +104,7 @@ $('#add-player').on('click', function(event) {
     });
     console.log('player two: ' + playerTwo.name);
   }
-  // from Nema
+  
   removeThisPlayer = database.ref("players/" + playerRefForRemove);
   removeThisPlayer.onDisconnect().remove();
 
@@ -112,6 +112,7 @@ $('#add-player').on('click', function(event) {
 
 $(".choice-1").on("click", function(event){
     playerOneChoice = $(this).attr("attr");
+    $("#result").text("You chose " + playerOneChoice + ". Waiting on "  + playerTwo.name + ".");
     console.log("player one choice is " + playerOneChoice);
     database.ref("/players/playerOne").update({
             choice: playerOneChoice,    
@@ -120,6 +121,7 @@ $(".choice-1").on("click", function(event){
 
 $(".choice-2").on("click", function(event){
     playerTwoChoice = $(this).attr("attr");
+    $("#result").text("You chose " + playerTwoChoice + ". Waiting on "  + playerOne.name + ".");
     console.log("player two choice is " + playerTwoChoice);
     database.ref("/players/playerTwo").update({
             choice: playerTwoChoice,    
