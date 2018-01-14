@@ -12,26 +12,34 @@ var config = {
 // create a variable to reference the database
 var database = firebase.database();
 
+// variable for game play
 var oneWins = 0;
 var oneLosses = 0;
 
 var twoWins = 0;
 var twoLosses = 0;
 
+//empty player objects, to be built in code
 var playerOne = {};
 var playerTwo = {};
 
+// sets variables to be referrenced on disconnect and remove player from DB
 var playerRefForRemove = "";
 var removeThisPlayer;
 
+// on value function to update from DB
 database.ref('players').on('value', function(snapshot) {
+    // sets variables to the existence of players in DB
     const playerOneExists = snapshot.child('playerOne').exists();
     const playerTwoExists = snapshot.child('playerTwo').exists();
+    // sets variables to the existence of a players choice key in DB
     const oneChoiceExists = snapshot.child('playerOne/choice').exists();
     const twoChoiceExists = snapshot.child('playerTwo/choice').exists();
+
     console.log("oneChoiceExists " + oneChoiceExists);
     console.log("twoChoiceExists " + twoChoiceExists);
 
+    // checks to see if players exist in DB and writes local objects from data, updates DOM
     if (playerOneExists && playerTwoExists) {
       $('#add-player').prop('disabled', true);
 
@@ -63,6 +71,7 @@ database.ref('players').on('value', function(snapshot) {
       $('.player-two-name').text('Waiting for Player Two');
     }
 
+    // checks for both players having made choices and calls function to compare and declare result
     if (oneChoiceExists && twoChoiceExists) {
         console.log("both choices exist");
         checkWin();
@@ -73,14 +82,17 @@ database.ref('players').on('value', function(snapshot) {
   },
 );
 
+// captures value from input field, assigns to player
 $('#add-player').on('click', function(event) {
   event.preventDefault();
   var newName = $("input[type='text']").val();
 
   if (!playerOne.name) {
-    $('.choice-2').off("click");
+    // turns of opponents choices, prevents cheating
+    $('.choice-2').off("click"); 
+    // sets referrence for removal on disconnect
     playerRefForRemove = "playerOne";
-
+    // updates database with player name
     database.ref("/players").update({
       playerOne: {
         name: newName,
@@ -104,12 +116,14 @@ $('#add-player').on('click', function(event) {
     });
     console.log('player two: ' + playerTwo.name);
   }
-  
+
+  // creates a path to each player to be romoved on disconnect
   removeThisPlayer = database.ref("players/" + playerRefForRemove);
   removeThisPlayer.onDisconnect().remove();
 
 });  
 
+// click handler for player one choices
 $(".choice-1").on("click", function(event){
     playerOneChoice = $(this).attr("attr");
     $("#result").text("You chose " + playerOneChoice + ". Waiting on "  + playerTwo.name + ".");
@@ -119,6 +133,7 @@ $(".choice-1").on("click", function(event){
     });
 });
 
+// click handler for player two choices
 $(".choice-2").on("click", function(event){
     playerTwoChoice = $(this).attr("attr");
     $("#result").text("You chose " + playerTwoChoice + ". Waiting on "  + playerOne.name + ".");
@@ -128,6 +143,7 @@ $(".choice-2").on("click", function(event){
     });
 });
 
+// function compares the two choices and declares winner, updates dom and database
 function checkWin(){
     console.log("game in motion");
     console.log("player one choice " + playerOne.choice);
@@ -305,6 +321,7 @@ function checkWin(){
     }
 };
 
+// resets the result div and prompts to play again
 function resetResultDiv() {
     $("#result").text("Play Again");
     
