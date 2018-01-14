@@ -78,7 +78,7 @@ $('#add-player').on('click', function(event) {
   var newName = $("input[type='text']").val();
 
   if (!playerOne.name) {
-    
+    $('.choice-2').off("click");
     playerRefForRemove = "playerOne";
 
     database.ref("/players").update({
@@ -91,7 +91,7 @@ $('#add-player').on('click', function(event) {
     });
     console.log('player one: ' + playerOne.name);
   } else {
-    
+    $('.choice-1').off("click");    
     playerRefForRemove = "playerTwo";
 
     database.ref("/players").update({

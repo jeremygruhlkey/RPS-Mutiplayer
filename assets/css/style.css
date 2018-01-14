@@ -26,8 +26,16 @@ form {
 .choice-1 {
     color: red;
 }
+
+.choice-1:hover {
+    color: blue;
+}
 .choice-2 {
     color: blue;
+}
+
+.choice-2:hover {
+    color: red;
 }
 
 p {
