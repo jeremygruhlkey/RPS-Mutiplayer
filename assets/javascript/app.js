@@ -120,12 +120,15 @@ $(".choice-2").on("click", function(event){
 function checkWin(){
     console.log("game in motion");
     console.log("player one choice " + playerOne.choice);
+
+    // for tie
     if (playerOne.choice === playerTwo.choice) {
         console.log("It's a tie!!");
         $("#result").text("It's a tie");
         setTimeout(resetResultDiv, 3000);
     }
 
+    // for player one choice of paper
     if (playerOne.choice === "paper" && (playerTwo.choice === "rock" || playerTwo.choice === "spock")) {
         console.log("player one wins!");
         oneWins++;
@@ -157,7 +160,138 @@ function checkWin(){
             choice: ".",
         });
     }
+
+    // for player one choice of rock
+    if (playerOne.choice === "rock" && (playerTwo.choice === "scissors" || playerTwo.choice === "lizard")) {
+        console.log("player one wins!");
+        oneWins++;
+        twoLosses++;
+        $("#result").text("rock beats " + playerTwo.choice);
+        setTimeout(resetResultDiv, 3000);
+        database.ref("/players/playerOne").update({
+            wins: oneWins,
+            choice: "",
+        });
+        database.ref("/players/playerTwo").update({
+            losses: twoLosses,
+            choice: ".",
+        });
+    }
+
+    if (playerOne.choice === "rock" && (playerTwo.choice === "paper" || playerTwo.choice === "spock")) {
+        console.log("player two wins!");
+        oneLosses++;
+        twoWins++;
+        $("#result").text(playerTwo.choice + " beats rock");
+        setTimeout(resetResultDiv, 3000);
+        database.ref("/players/playerOne").update({
+            losses: oneLosses,
+            choice: "",
+        });
+        database.ref("/players/playerTwo").update({
+            wins: twoWins,
+            choice: ".",
+        });
+    }
    
+    // for player one choice of scissors
+    if (playerOne.choice === "scissors" && (playerTwo.choice === "paper" || playerTwo.choice === "lizard")) {
+        console.log("player one wins!");
+        oneWins++;
+        twoLosses++;
+        $("#result").text("scissors beats " + playerTwo.choice);
+        setTimeout(resetResultDiv, 3000);
+        database.ref("/players/playerOne").update({
+            wins: oneWins,
+            choice: "",
+        });
+        database.ref("/players/playerTwo").update({
+            losses: twoLosses,
+            choice: ".",
+        });
+    }
+
+    if (playerOne.choice === "scissors" && (playerTwo.choice === "rock" || playerTwo.choice === "spock")) {
+        console.log("player two wins!");
+        oneLosses++;
+        twoWins++;
+        $("#result").text(playerTwo.choice + " beats scissors");
+        setTimeout(resetResultDiv, 3000);
+        database.ref("/players/playerOne").update({
+            losses: oneLosses,
+            choice: "",
+        });
+        database.ref("/players/playerTwo").update({
+            wins: twoWins,
+            choice: ".",
+        });
+    }
+
+    // for player one choice of lizard
+    if (playerOne.choice === "lizard" && (playerTwo.choice === "spock" || playerTwo.choice === "paper")) {
+        console.log("player one wins!");
+        oneWins++;
+        twoLosses++;
+        $("#result").text("lizard beats " + playerTwo.choice);
+        setTimeout(resetResultDiv, 3000);
+        database.ref("/players/playerOne").update({
+            wins: oneWins,
+            choice: "",
+        });
+        database.ref("/players/playerTwo").update({
+            losses: twoLosses,
+            choice: ".",
+        });
+    }
+
+    if (playerOne.choice === "lizard" && (playerTwo.choice === "rock" || playerTwo.choice === "scissors")) {
+        console.log("player two wins!");
+        oneLosses++;
+        twoWins++;
+        $("#result").text(playerTwo.choice + " beats lizard");
+        setTimeout(resetResultDiv, 3000);
+        database.ref("/players/playerOne").update({
+            losses: oneLosses,
+            choice: "",
+        });
+        database.ref("/players/playerTwo").update({
+            wins: twoWins,
+            choice: ".",
+        });
+    }
+
+    // for player one choice of spock
+    if (playerOne.choice === "spock" && (playerTwo.choice === "scissors" || playerTwo.choice === "rock")) {
+        console.log("player one wins!");
+        oneWins++;
+        twoLosses++;
+        $("#result").text("Spock beats " + playerTwo.choice);
+        setTimeout(resetResultDiv, 3000);
+        database.ref("/players/playerOne").update({
+            wins: oneWins,
+            choice: "",
+        });
+        database.ref("/players/playerTwo").update({
+            losses: twoLosses,
+            choice: ".",
+        });
+    }
+
+    if (playerOne.choice === "spock" && (playerTwo.choice === "lizzard" || playerTwo.choice === "paper")) {
+        console.log("player two wins!");
+        oneLosses++;
+        twoWins++;
+        $("#result").text(playerTwo.choice + " beats Spock");
+        setTimeout(resetResultDiv, 3000);
+        database.ref("/players/playerOne").update({
+            losses: oneLosses,
+            choice: "",
+        });
+        database.ref("/players/playerTwo").update({
+            wins: twoWins,
+            choice: ".",
+        });
+    }
 };
 
 function resetResultDiv() {
