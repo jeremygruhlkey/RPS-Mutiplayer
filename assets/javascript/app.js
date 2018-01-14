@@ -123,34 +123,44 @@ function checkWin(){
     if (playerOne.choice === playerTwo.choice) {
         console.log("It's a tie!!");
         $("#result").text("It's a tie");
+        setTimeout(resetResultDiv, 3000);
     }
 
     if (playerOne.choice === "paper" && (playerTwo.choice === "rock" || playerTwo.choice === "spock")) {
         console.log("player one wins!");
         oneWins++;
         twoLosses++;
+        $("#result").text("paper beats " + playerTwo.choice);
+        setTimeout(resetResultDiv, 3000);
         database.ref("/players/playerOne").update({
             wins: oneWins,
             choice: "",
         });
         database.ref("/players/playerTwo").update({
             losses: twoLosses,
-            choice: "",
+            choice: ".",
         });
     }
 
     if (playerOne.choice === "paper" && (playerTwo.choice === "scissors" || playerTwo.choice === "lizard")) {
-        console.log("player one wins!");
+        console.log("player two wins!");
         oneLosses++;
         twoWins++;
+        $("#result").text(playerTwo.choice + " beats paper");
+        setTimeout(resetResultDiv, 3000);
         database.ref("/players/playerOne").update({
             losses: oneLosses,
             choice: "",
         });
         database.ref("/players/playerTwo").update({
             wins: twoWins,
-            choice: "",
+            choice: ".",
         });
-}
+    }
    
-}
+};
+
+function resetResultDiv() {
+    $("#result").text("Play Again");
+    
+};
