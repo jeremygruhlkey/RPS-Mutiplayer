@@ -20,7 +20,10 @@ var twoLosses = 0;
 
 var playerOne = {};
 var playerTwo = {};
-
+// from Nema
+var playerRefForRemove = "";
+var removeThisPlayer;
+// 
 database.ref('players').on('value', function(snapshot) {
     const playerOneExists = snapshot.child('playerOne').exists();
     const playerTwoExists = snapshot.child('playerTwo').exists();
@@ -75,7 +78,8 @@ $('#add-player').on('click', function(event) {
   var newName = $("input[type='text']").val();
 
   if (!playerOne.name) {
-    // $('.player-one-name').text(playerOne.name);
+    // from Nema
+    playerRefForRemove = "playerOne";
 
     database.ref("/players").update({
       playerOne: {
@@ -87,7 +91,8 @@ $('#add-player').on('click', function(event) {
     });
     console.log('player one: ' + playerOne.name);
   } else {
-    // $('.player-two-name').text(playerTwo.name);
+    // from Nema
+    playerRefForRemove = "playerTwo";
 
     database.ref("/players").update({
       playerTwo: {
@@ -99,6 +104,10 @@ $('#add-player').on('click', function(event) {
     });
     console.log('player two: ' + playerTwo.name);
   }
+  // from Nema
+  removeThisPlayer = database.ref("players/" + playerRefForRemove);
+  removeThisPlayer.onDisconnect().remove();
+
 });  
 
 $(".choice-1").on("click", function(event){
